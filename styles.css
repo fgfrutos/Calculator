@@ -1,6 +1,6 @@
 html, body {
     margin: 0;
-    height: 100%;
+    min-height: 100%;
     font-family: Helvetica, Arial, sans-serif;
 }
 
@@ -11,15 +11,14 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    min-height: 100vh;
 }
 
 #phone {
-    width:160px;
-    height:340px;
+    width: 350px;
+    height: 700px;
     margin: 50px auto;
-    padding: 2px; 
     border-radius: 15px;
+    padding: 2px;
     background-color: black;
     display: flex;
     justify-content: center;
@@ -30,13 +29,12 @@ body {
 
 #calculator {
     display: flex;
-    width:150px;
-    height:300px;
+    width: 95%;
+    height:95%;
     border-radius: 15px;
-    margin: auto;
+    margin: 3px;
     background-color: rgb(35, 35, 35);
-    padding: 5px 0;
-    padding-bottom: 20px;
+    padding: 0;
     flex-flow: column nowrap;
     align-items: center;
     gap: 10px;
@@ -44,12 +42,13 @@ body {
 
  #screen {
      width: 90%;
-     height: 40%;
+     height: 35%;
      color: white;
-     font-size: 2.5rem;
+     font-size: 5rem;
      display: flex;
      justify-content: flex-end;
      align-items: flex-end;
+     padding-right: 10px;
  }
 
  #screen > p {
@@ -57,33 +56,34 @@ body {
  }
 
  #body {
-    width: 100%;
-    height: 60%; 
+    width: 95%;
+    height: 65%; 
     display: flex;
     flex-flow: row wrap;
     gap: 3px;
+    margin-bottom: 5%;
     align-items: flex-end;
     justify-content: center;
  }
 
  .button {
-     height: 32px;
-     width: 32px;
+     height: 75px;
+     width: 75px;
      border-radius: 50%;
      background-color: rgb(70, 70, 70);
      display: flex; 
      justify-content: center;
      align-items: center;  
-     font-size: .85rem;
+     font-size: 1.5rem;
      color: white;
      font-weight: 500;
  }
 
  .long {
-     width: 54px;
-     border-radius: 15px;
+     width: 120px;
+     border-radius: 35px;
      justify-content: flex-start;
-     padding-left: 10px;
+     padding-left: 30px;
  }
 
  .special {
