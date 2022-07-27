@@ -1,10 +1,11 @@
 
 // UI
-screen = document.querySelector('#screen');
-text = document.querySelector('#screen > p');
+const screen = document.querySelector('#screen');
+const text = document.querySelector('#screen > p');
 text.style.fontSize = '2.5rem';
-clearBtn = document.querySelector('.clear');
-numBtn = Array.from(document.querySelectorAll('div[class=button]'));
+const clearBtn = document.querySelector('.clear');
+const signBtn = document.querySelector('.sign');
+const numBtn = Array.from(document.querySelectorAll('div[class=button]'));
 numBtn.push(document.querySelector('.button.long'));
 commaBtn = document.querySelector('.comma');
 
@@ -13,7 +14,7 @@ const calculator = {
     numbers: [0, 0],
     Operation: '',
     operate(func, num1, num2) {
-        return func(num1, num2)
+        return func(num1, num2);
     },
     sum(num1, num2) {
         return num1 + num2;
@@ -35,7 +36,7 @@ const calculator = {
 // Functions
 const changeSize = (element) => {
     Size = element.style.fontSize.replace('rem', '')
-    return `${parseFloat(Size)*.88}rem`
+    return `${parseFloat(Size)*.89}rem`
 }
 
 // Function that formate numbers
@@ -46,13 +47,15 @@ const formatting = (x) => {
     decimal = (x[1] !== undefined)? `.${x[1]}` : "";
     return inte + decimal;
 }
+
 // Handle events
 numBtn.forEach(btn => {
     btn.addEventListener('click', () => {
         let tmpText = text.textContent.replace(",", "");
-        if (tmpText.length < 10) {
-            if (tmpText === '0') {
-                tmpText = '';
+        const condition = (tmpText.match("\\.") === null)?tmpText.length < 10:tmpText.length < 11;
+        if (condition) {
+            if (tmpText === '0' || tmpText === '-0') {
+                tmpText = tmpText.replace('0', '');
                 clearBtn.textContent = 'C';
             }
 
@@ -72,6 +75,18 @@ commaBtn.addEventListener('click', () => {
         text.textContent += "."
     }
 });
+
+signBtn.addEventListener('click', () =>{
+    if (text.textContent[0] === '-') {
+        text.textContent.replace("-", "");
+    } else {
+        text.textContent = '-'+text.textContent;
+    }
+    if (text.clientWidth > screen.clientWidth-2) {
+        text.style.fontSize = changeSize(text)
+    }
+});
+
 
 clearBtn.addEventListener('click', () =>{
     clearBtn.textContent = 'AC';
