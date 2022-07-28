@@ -7,14 +7,18 @@ const clearBtn = document.querySelector('.clear');
 const signBtn = document.querySelector('.sign');
 const numBtn = Array.from(document.querySelectorAll('div[class=button]'));
 numBtn.push(document.querySelector('.button.long'));
-commaBtn = document.querySelector('.comma');
+const commaBtn = document.querySelector('.comma');
+const operateBtn = Array.from(document.querySelectorAll('.operator'));
+const equalBtn = operateBtn.pop()
 
 // Calculator object
 const calculator = {
-    numbers: [0, 0],
+    input: [undefined, undefined],
+    output: undefined,
     Operation: '',
-    operate(func, num1, num2) {
-        return func(num1, num2);
+    operating: false,
+    operate(func, ...args) {
+        return func(args[0], args[1]);
     },
     sum(num1, num2) {
         return num1 + num2;
@@ -30,13 +34,34 @@ const calculator = {
 
     divide(num1, num2) {
         return num1 / num2;
-    }
+    },
+    saveNumber() {
+        let num = parseFloat(text.textContent.replace(",", ""));
+        if (calculator.operating && calculator.output === undefined && calculator.input[0] !== undefined) {
+            calculator.input[1] = num;
+        } else {
+            calculator.input[0] = num;
+        }
+    },
+    display() {
+        calculator.input[1] = ([calculator.input[1], calculator.output].every(num => num === undefined)) ? calculator.input[0] : calculator.input[1];
+        if ([calculator.input[1], calculator.output].some(num => num !== undefined)) {
+            operateBtn.forEach(btn => btn.classList.remove("activated"));
+            calculator.input[0] = (calculator.input[0] === undefined)? calculator.output : calculator.input[0];
+            calculator.input[1] = (calculator.input[1] === undefined)? calculator.input[0] : calculator.input[1];
+            calculator.output = calculator.operate(calculator[calculator.operation], ...calculator.input);
+            text.textContent = formatting(calculator.output.toString());
+            calculator.input[0] = undefined;
+        } else {
+            console.log("Invalid operation");
+        }
+    },
  }
 
 // Functions
-const changeSize = (element, change) => {
-    Size = element.style.fontSize.replace('rem', '')
-    return (change === 1)? `${parseFloat(Size)*1.12}rem`: `${parseFloat(Size)*.88}rem`;
+const changeSize = (change) => {
+    Size = text.style.fontSize.replace('rem', '')
+    text.style.fontSize = (change === 1)? `${parseFloat(Size)*1.12}rem`: `${parseFloat(Size)*.88}rem`;
 }
 
 // Function that formate numbers
@@ -46,12 +71,25 @@ const formatting = (x) => {
     inte = x[0].replace(",", "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     decimal = (x[1] !== undefined)? `.${x[1]}` : "";
     return inte + decimal;
+    /*TODO: formate the number depending on decimal an integer quantity
+    and, for output, return the number in exponential notation if necesary*/
 }
 
 // Handle events
 numBtn.forEach(btn => {
     btn.addEventListener('click', () => {
-        let tmpText = text.textContent.replace(",", "");
+        let tmpText;
+        if (calculator.input[1] === undefined && calculator.operating) {
+            tmpText = "";
+        } else if (calculator.output !== undefined && calculator.input[0] === undefined) {
+            tmpText = "";
+        } else if (calculator.input[0] !== undefined && calculator.output === undefined && calculator.operating && calculator.input[1] === undefined) {
+            tmpText = "";
+        }
+        else {
+            tmpText = text.textContent.replace(",", "");
+        }
+
         if (tmpText.length < 10) {
             if (tmpText === '0' || tmpText === '-0') {
                 tmpText = tmpText.replace('0', '');
@@ -62,14 +100,15 @@ numBtn.forEach(btn => {
             text.textContent = formatting(tmpText);
 
             if (text.clientWidth > screen.clientWidth-10) {
-                text.style.fontSize = changeSize(text, 0)
+                text.style.fontSize = changeSize(0);
             }
+            calculator.saveNumber();
         }
     });
 });
 
 commaBtn.addEventListener('click', () => {
-    // Needs to use double backslash to scape dot special character (find all)
+    // Needs to use double backslash to scape dot special character
     if (text.textContent.match("\\.") === null && text.textContent.replaceAll(",", "").length !==9) {
         text.textContent += "."
     }
@@ -78,20 +117,47 @@ commaBtn.addEventListener('click', () => {
 signBtn.addEventListener('click', () =>{
     if (text.textContent[0] === '-') {
         text.textContent = text.textContent.replace("-", "");
-        const condition = text.textContent.replace(/[.,]/g, "").length === 9 && text.clientWidth > screen.clientWidth-10
+        const condition = text.textContent.replace(/[.,]/g, "").length === 9 && text.clientWidth > screen.clientWidth-10;
         if (condition) {
-            text.style.fontSize = changeSize(text, 1);
+            text.style.fontSize = changeSize(1);
         }
     } else {
         text.textContent = '-'+text.textContent;
     }
     if (text.clientWidth > screen.clientWidth-10) {
-        text.style.fontSize = changeSize(text)
+        text.style.fontSize = changeSize(0)
     }
 });
 
+operateBtn.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        operateBtn.forEach(btn => btn.classList.remove("activated"));
+        if (!calculator.operating) {
+            e.target.classList.toggle("activated");
+            calculator.operation = e.target.dataset.value;
+            calculator.saveNumber();
+            calculator.operating = true;
+        } else {
+            //TODO: change the operation when you have selected two numbers is equal to operate
+            console.log("asan")
+            e.target.classList.toggle("activated");
+            calculator.operation = e.target.dataset.value;
+            // [calculator.input[0], calculator.input[1], calculator.output] = [calculator.output, undefined, undefined];
+            // calculator.saveNumber();
+        }
+
+    });
+});
+
+equalBtn.addEventListener("click", calculator.display);
 
 clearBtn.addEventListener('click', () =>{
+    operateBtn.forEach(btn => btn.classList.remove("activated"));
+    calculator.operating = false;
+    calculator.output = undefined;
+    calculator.input.forEach((num, index) => {
+        calculator.input[index] = undefined;
+    });
     text.style.fontSize = '5rem';
     clearBtn.textContent = 'AC';
     text.textContent = '0';
