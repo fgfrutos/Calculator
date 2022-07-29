@@ -1,14 +1,13 @@
 html, body {
     margin: 0;
-    min-height: 100%;
-    min-width: 100%;
-    font-family: Helvetica, Arial, sans-serif;
-}
+    height: 100%;
+    width: 100%;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    /* Gradient retrieved from: https://www.eggradients.com/category/metal-gradient*/
+    background-color: #fde7f9;
+    background-image: linear-gradient(315deg, #fde7f9 0%, #aacaef 74%);
+    }
 
-body {
-    background: rgb(63,94,251);
-background: linear-gradient(180deg, rgba(63,94,251,1) 0%, rgba(252,70,135,1) 100%);
-}
 
 #phone {
     width: 350px;
@@ -18,19 +17,31 @@ background: linear-gradient(180deg, rgba(63,94,251,1) 0%, rgba(252,70,135,1) 100
     padding: 2px;
     background-color: black;
     display: flex;
+    flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
     box-shadow: inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45);
-
 }
 
+#head {
+    display: flex;
+    width: 90%;
+    align-items: space-between;
+    padding: 0 15px;
+}
+#head > p {
+    font-size: 1rem;
+    color: white;
+    margin: 0;
+    text-align: left;
+}
 #calculator {
     display: flex;
     width: 95%;
     height:95%;
     border-radius: 30px;
     margin: 3px;
-    background-color: rgb(35, 35, 35);
+    background-color: rgb(19, 19, 19);
     padding: 0;
     flex-flow: column nowrap;
     align-items: center;
@@ -45,7 +56,7 @@ background: linear-gradient(180deg, rgba(63,94,251,1) 0%, rgba(252,70,135,1) 100
      display: flex;
      justify-content: flex-end;
      align-items: flex-end;
-     padding-right: 10px;
+     padding-right: 0 20px;
  }
 
  #screen > p {
@@ -83,8 +94,8 @@ background: linear-gradient(180deg, rgba(63,94,251,1) 0%, rgba(252,70,135,1) 100
      padding-left: 30px;
  }
 
- .special {
-     background-color: rgb(200, 200, 200);
+ .top {
+     background-color: rgb(177, 175, 175);
      color: black;
  }
 
@@ -93,6 +104,19 @@ background: linear-gradient(180deg, rgba(63,94,251,1) 0%, rgba(252,70,135,1) 100
  }
 
  .activated {
+     transition: all .2s ease-in-out;
      background-color: white;
      color: orange;
+ }
+
+ .button:hover {
+     filter: brightness(120%);
+ }
+
+ #bottom {
+     background-color: #fff;
+     height: 5px;
+     width: 35%;
+     border-radius: 10px;
+     margin-bottom: 10px;
  }
