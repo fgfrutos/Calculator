@@ -28,6 +28,7 @@ html, body {
     width: 90%;
     align-items: space-between;
     padding: 0 15px;
+    padding-top: 5px;
 }
 #head > p {
     font-size: 1rem;
@@ -68,15 +69,15 @@ html, body {
     height: 65%; 
     display: flex;
     flex-flow: row wrap;
-    gap: 3px;
+    gap: 10px;
     margin-bottom: 5%;
     align-items: flex-end;
     justify-content: center;
  }
 
  .button {
-     height: 75px;
-     width: 75px;
+     height: 65px;
+     width: 65px;
      border-radius: 50%;
      background-color: rgb(70, 70, 70);
      display: flex; 
@@ -88,10 +89,10 @@ html, body {
  }
 
  .long {
-     width: 120px;
+     width: 115px;
      border-radius: 35px;
      justify-content: flex-start;
-     padding-left: 30px;
+     padding-left: 25px;
  }
 
  .top {
