@@ -6,12 +6,8 @@ html, body {
 }
 
 body {
-    background:
-      url(background.jpg) center center;  
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background: rgb(63,94,251);
+background: linear-gradient(180deg, rgba(63,94,251,1) 0%, rgba(252,70,135,1) 100%);
 }
 
 #phone {
