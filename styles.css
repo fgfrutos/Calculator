@@ -6,6 +6,8 @@ html, body {
     /* Gradient retrieved from: https://www.eggradients.com/category/metal-gradient*/
     background-color: #fde7f9;
     background-image: linear-gradient(315deg, #fde7f9 0%, #aacaef 74%);
+    background-size: cover;
+    background-repeat: no-repeat;
     }
 
 
@@ -35,14 +37,16 @@ html, body {
     color: white;
     margin: 0;
     text-align: left;
+    font-weight: 900;
 }
+
 #calculator {
     display: flex;
     width: 95%;
-    height:95%;
+    height:97%;
     border-radius: 30px;
     margin: 3px;
-    background-color: rgb(19, 19, 19);
+    background-color: rgb(9, 9, 9);
     padding: 0;
     flex-flow: column nowrap;
     align-items: center;
