@@ -27,7 +27,7 @@ html, body {
 
 #head {
     display: flex;
-    width: 90%;
+    width: 95%;
     align-items: space-between;
     justify-content: space-between;
     padding-top: 5px;
