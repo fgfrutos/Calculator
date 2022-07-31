@@ -72,7 +72,7 @@ const calculator = {
         }
     },
     roundOutput() {
-        if (Math.abs(calculator.screen) >= 1e9 || (Math.abs(calculator.screen) <= 1e-9 && calculator.screen !== 0)) {
+        if (Math.abs(calculator.screen) >= 1e9 || (Math.abs(calculator.screen) <= 1e-7 && calculator.screen !== 0)) {
             console.log(calculator.screen)
             text.style.fontSize = '5rem';
             if (calculator.screen === Infinity) {
@@ -83,8 +83,10 @@ const calculator = {
             let tmpNum = +calculator.screen;
             for (let i = 6; i > 0; i--) {
                 tmpText = tmpNum.toExponential(i);
-                // Fix toExponential iterator
-                if (tmpText.split(".")[1].split("e")[0].match(/[1-9]/g) !== null) {
+                let decimal = tmpText.split(".")[1].split("e")[0].split('');
+                console.log(decimal)
+                // TODO: Fix toExponential formatting
+                if (decimal[decimal.length-1].match(/[1-9]/g) !== null) {
                     text.textContent = tmpText.replace("+", "");
                     if (i >= 3) {
                         adjustFontSize();
@@ -99,6 +101,7 @@ const calculator = {
             calculator.processDecimal();
             text.style.fontSize = '5rem';
             text.textContent = formatting(calculator.screen);
+            calculator.screen = +calculator.screen.replaceAll(',', '');
             if (Math.abs(calculator.screen) > 9e5 || Math.abs(calculator.screen) < 9e-5 || text.textContent.replace(/[,.-]/g, "").length > 6) adjustFontSize();
             return;
         }
@@ -119,6 +122,17 @@ const calculator = {
                 }
             }
             calculator.screen = `${calculator.screen.split('.')[0]}.${tmp}`;
+        }
+    },
+    applyPercent() {
+        calculator.screen = (calculator.screen === undefined)? +text.textContent.replaceAll(",", ""): calculator.screen;
+        if (typeof(calculator.screen) === 'number' && calculator.screen !== 0) {
+            calculator.screen = calculator.screen / 100;
+            calculator.roundOutput();
+            calculator.saveNumber();
+            if (text.clientWidth > screen.clientWidth-10) {
+                adjustFontSize();
+            }
         }
     },
  }
@@ -210,6 +224,9 @@ signBtn.addEventListener('click', () =>{
     }
     calculator.screen = +text.textContent.replaceAll(",", "");
 });
+
+percent.addEventListener('click', calculator.applyPercent);
+
 
 operateBtn.forEach(btn => {
     btn.addEventListener('click', (e) => {
