@@ -1,7 +1,7 @@
 html, body {
     margin: 0;
-    height: 100%;
-    width: 100%;
+    min-height: 100vh;
+    min-width: 100vw;
     font-family: "Helvetica Neue", Arial, sans-serif;
     /* Gradient retrieved from: https://www.eggradients.com/category/metal-gradient*/
     background-color: #fde7f9;
@@ -29,15 +29,80 @@ html, body {
     display: flex;
     width: 90%;
     align-items: space-between;
-    padding: 0 15px;
+    justify-content: space-between;
     padding-top: 5px;
 }
 #head > p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: white;
     margin: 0;
+    margin-left: 8px;
     text-align: left;
     font-weight: 900;
+}
+
+.container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 6px;
+}
+
+
+#signal {
+    width: 30px;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 2px;
+    align-items: flex-end;
+}
+
+.bar {
+    width: 15%;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.first {
+    height: 25%;
+}
+
+.second {
+    height: 50%;
+}
+
+.third {
+    height: 75%;
+    background-color: gray;
+}
+
+.fourth {
+    height: 100%;
+    background-color: gray;
+}
+
+
+#wifi {
+    width: 30px;
+	background: url('wifi-white.svg') center center;
+    background-size: cover;
+}
+
+#battery {
+    align-self: center;
+    height: 50%;
+    width: 25px;
+    border: 2px solid gray;
+    border-radius: 5px;
+    padding: 1px 0;
+}
+
+.inner {
+    height: 100%;
+    width: 50%;
+    background-color: white;
+    border-radius: 2px;
+    margin-left: 1px;
 }
 
 #calculator {
