@@ -11,6 +11,7 @@ const commaBtn = document.querySelector('.comma');
 const operateBtn = Array.from(document.querySelectorAll('.operator'));
 const equalBtn = operateBtn.pop();
 const percent = document.querySelector('.percent');
+const time = document.querySelector('#head > p');
 
 // Calculator object
 const calculator = {
@@ -165,6 +166,15 @@ const formatting = (x) => {
     return inte + decimal;
 }
 
+const printDate = () => {
+    const date = new Date();
+    const hour = (date.getHours() < 10)? `0${date.getHours()}`: date.getHours();
+    const minutes = (date.getMinutes() < 10)? `0${date.getMinutes()}`: date.getMinutes();
+    time.textContent = `${hour}:${minutes}`;
+}
+
+printDate();
+
 // Handle events
 numBtn.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -259,6 +269,7 @@ clearBtn.addEventListener('click', () =>{
     text.textContent = '0';
 });
 
+setInterval(printDate, 1000);
+
 // TODO:
-// navigator.connection.effectivetype to change wifi logo depending on conection.
 // navigator.gerBattery to display battery level
