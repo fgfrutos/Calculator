@@ -15,7 +15,7 @@ const time = document.querySelector('#head > p');
 
 // Calculator object
 const calculator = {
-    input: [undefined, undefined],
+    input: [0, undefined],
     screen: 0,
     Operation: '',
     operating: "",
@@ -54,8 +54,15 @@ const calculator = {
     },
     display(e) {
         if (typeof(calculator.input[0]) === 'number' && calculator.operating) {
-            calculator.input[1] =  (!calculator.input[1])? calculator.input[0]: calculator.input[1];
+            calculator.input[1] =  (calculator.input[1] === undefined)? calculator.input[0]: calculator.input[1];
             operateBtn.forEach(btn => btn.classList.remove("activated"));
+            if (calculator.input[1] === 0 && calculator.operation === 'divide'){
+                text.style.fontSize = '5rem';
+                text.textContent = 'Error';
+                [calculator.input, calculator.screen] = [[0, undefined], 0];
+                alert("You can't divide by 0");
+                return;
+            }
             calculator.screen = calculator.operate(calculator[calculator.operation], ...calculator.input);
 
             calculator.roundOutput();
@@ -73,7 +80,7 @@ const calculator = {
         }
     },
     roundOutput() {
-        if (Math.abs(calculator.screen) >= 1e9 || (Math.abs(calculator.screen) <= 1e-7 && calculator.screen !== 0)) {
+        if (Math.abs(calculator.screen) > 9e8 || (Math.abs(calculator.screen) < 1e-7 && calculator.screen !== 0)) {
             console.log(calculator.screen)
             text.style.fontSize = '5rem';
             if (calculator.screen === Infinity) {
@@ -85,11 +92,10 @@ const calculator = {
             for (let i = 6; i > 0; i--) {
                 tmpText = tmpNum.toExponential(i);
                 let decimal = tmpText.split(".")[1].split("e")[0].split('');
-                console.log(decimal)
                 // TODO: Fix toExponential formatting
                 if (decimal[decimal.length-1].match(/[1-9]/g) !== null) {
                     text.textContent = tmpText.replace("+", "");
-                    if (i >= 3) {
+                    if (text.clientWidth > screen.clientWidth - 10) {
                         adjustFontSize();
                         return;
                     } else {
@@ -111,7 +117,7 @@ const calculator = {
         return ((typeof(calculator.input[0]) === 'number' && calculator.input[1] === undefined) && calculator.operating === 'operating') || ((typeof(calculator.input[0]) === 'number' && typeof(calculator.input[1]) === 'number') && (calculator.operating === 'operated' && calculator.screen === undefined));
     },
     processDecimal() {
-        calculator.screen = (Number.isInteger(calculator.screen))? calculator.screen.toString(): calculator.screen.toPrecision(9);
+        calculator.screen = (Number.isInteger(calculator.screen))? calculator.screen.toString(): calculator.screen.toPrecision(8);
         if (calculator.screen.includes(".")){
             let tmp = calculator.screen.split('.')[1].split('')
             for (let i = tmp.length-1; i > 0; i--) {
@@ -220,6 +226,11 @@ commaBtn.addEventListener('click', () => {
 });
 
 signBtn.addEventListener('click', () =>{
+    if (calculator.shouldResetText()) {
+        text.textContent = '0';
+        tmpText = '0';
+        text.style.fontSize = '5rem';
+    }
     if (text.textContent[0] === '-') {
         text.textContent = text.textContent.replace("-", "");
         const condition = text.textContent.replace(/[.,]/g, "").length >= 9 && text.clientWidth > screen.clientWidth-60;
@@ -233,6 +244,7 @@ signBtn.addEventListener('click', () =>{
         adjustFontSize();
     }
     calculator.screen = +text.textContent.replaceAll(",", "");
+    calculator.saveNumber();
 });
 
 percent.addEventListener('click', calculator.applyPercent);
@@ -263,7 +275,7 @@ equalBtn.addEventListener("click", calculator.display);
 clearBtn.addEventListener('click', () =>{
     operateBtn.forEach(btn => btn.classList.remove("activated"));
     calculator.operating = '';
-    [calculator.input, calculator.screen] = [[undefined, undefined], 0];
+    [calculator.input, calculator.screen] = [[0, undefined], 0];
     text.style.fontSize = '5rem';
     clearBtn.textContent = 'AC';
     text.textContent = '0';
